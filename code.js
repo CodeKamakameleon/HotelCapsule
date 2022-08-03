@@ -4,7 +4,7 @@ const guestNameInput = document.getElementById("guest");
 const bookForm = document.getElementById("bookForm");
 const messages = document.querySelector("#messages");
 const checkoutForm = document.querySelector("#checkoutForm");
-const checkoutRoomInput = document.querySelector("#checkoutCapsule");
+const checkoutRoomInput = document.querySelector("#checkOutCapsule");
 
 function init() {
   const capsuleContainer = document.getElementById("capsules");
@@ -24,15 +24,15 @@ init();
 
 let timeout;
 
-const handleMsgs = (Msg, className) => {
+const handleMsgs = (msg, className) => {
   if (timeout) clearTimeout(timeout);
 
   messages.innerText = msg;
-  messages.className = `alert alert-${type}`;
+  // messages.className = `alert alert-${type}`;
 
   setTimeout(() => {
     handleMsgs("", "info");
-  }, 5000);
+  }, 6000);
 };
 
 const book = (evt) => {
@@ -70,7 +70,7 @@ const book = (evt) => {
 
   evt.target.reset();
 
-  // handleMsgs("Success", "success");
+  handleMsgs(`Successfully checked into capsule #${capNum}`, `success`);
 };
 
 bookForm.addEventListener("submit", book);
@@ -79,32 +79,33 @@ const checkout = (evt) => {
   evt.preventDefault();
 
   // Get the checkout room number from the input (select the imput at the top of this page)
-  const capNum = capNumInput.value;
-  const out = document.querySelector(`#checkOutCapsule`);
-  // const capsule = document.querySelector(`#capsuleLabel${capNum}`);
+  const capNum = checkoutRoomInput.value;
   const capsuleOut = document.querySelector(`#capsuleLabel${capNum}`);
   const guest = document.querySelector(`#guest${capNum}`);
 
-  // capsuleOut = capsule.value;
-
   // if the room is blank or unoccupied, show an error in messages
-  if (!out.value) {
+  if (!capNum) {
     alert("Please fill in you capsule number.");
-  } else if (out.value !== capsuleOut.valueq) {
-    alert("idek");
+  } else if (capNum > CAPSULE_COUNT) {
+    alert("This capsule doesn't exist.");
   }
+  // if checkout input is not equal to occupied capsule #
 
   // make sure room is occupied
   else if (!capsuleOut.classList.contains("badge-danger")) {
     alert("This capsule is not occupied. Please type your capsule number.");
   }
 
-  capsule.classList.remove("badge-danger");
-  capsule.classList.add("badge-success");
+  capsuleOut.classList.remove("badge-danger");
+  capsuleOut.classList.add("badge-success");
 
   // change the label and name back to original state, including classes
-  checkoutRoomInput === out;
+
   guest.innerText = "Unoccupied";
+
+  handleMsgs(`Successfully checked out of capsule #${capNum}`, `success`);
+
+  evt.target.reset();
 };
 
 checkoutForm.addEventListener("submit", checkout);
